@@ -1,68 +1,61 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+
+import clsx from 'clsx';
 
 import styles from './styles.module.css';
 
-const AD_ELEMENT_ID = 'ad-element-id';
-const CONTAINER_SELECTOR = '[class^="tableOfContents"]';
+const BACKGROUNDS = [
+  styles.backgroundBlue,
+  styles.backgroundOrange,
+  styles.backgroundPurple,
+  styles.backgroundRed,
+];
 
-function SidebarAd() {
+export default React.memo(function SidebarAd() {
+  const backgroundClass =
+    BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
+
+  // Because the SSR and client output can differ and hydration doesn't patch attribute differences,
+  // we'll render this on the browser only.
   return (
-    <a
-      className={styles.container}
-      href="https://www.moonchaser.io/?utm_source=techinterviewhandbook&utm_medium=referral&utm_content=website_docs_sidebar"
-      target="_blank"
-      rel="noreferrer noopener"
-      onClick={() => {
-        window.gtag('event', 'moonchaser.click');
-      }}>
-      <p className={styles.tagline}>
-        <strong>Get paid more.</strong> Receive risk-free salary negotiation
-        help from Moonchaser. You pay nothing unless your offer is increased.
-      </p>
-    </a>
+    <BrowserOnly>
+      {() =>
+        Math.random() > 0.5 ? (
+          <a
+            className={clsx(styles.container, backgroundClass)}
+            href="https://www.moonchaser.io/?utm_source=techinterviewhandbook&utm_medium=referral&utm_content=website_docs_sidebar"
+            key={Math.random()}
+            target="_blank"
+            rel="noreferrer noopener"
+            onClick={() => {
+              window.gtag('event', 'moonchaser.sidebar.click');
+            }}>
+            <p className={styles.tagline}>
+              <strong>Get paid more.</strong> Receive risk-free salary
+              negotiation help from Moonchaser. You pay nothing unless your
+              offer is increased.
+            </p>
+          </a>
+        ) : (
+          <a
+            className={clsx(styles.container, backgroundClass)}
+            href="https://www.levels.fyi/services/?ref=TechInterviewHandbook&utm_source=techinterviewhandbook&utm_medium=referral&utm_content=website_docs_sidebar"
+            key={Math.random()}
+            target="_blank"
+            rel="noreferrer noopener"
+            onClick={() => {
+              window.gtag('event', 'levelsfyi.sidebar.click');
+            }}>
+            <p className={styles.tagline}>
+              <strong>Get paid, not played.</strong> Chat with former tech
+              recruiters who'll guide you on exactly what to say to negotiate a
+              higher offer.
+            </p>
+          </a>
+        )
+      }
+    </BrowserOnly>
   );
-}
-
-function initAd() {
-  const $adEl = (() => {
-    const $el = document.getElementById(AD_ELEMENT_ID);
-    if ($el) {
-      return $el;
-    }
-
-    const $tocEl = document.querySelector(CONTAINER_SELECTOR);
-    if ($tocEl == null) {
-      return null;
-    }
-
-    const $newEl = document.createElement('div');
-    $newEl.id = AD_ELEMENT_ID;
-    $tocEl.prepend($newEl);
-
-    return $newEl;
-  })();
-
-  if ($adEl == null) {
-    return;
-  }
-
-  ReactDOM.render(<SidebarAd />, $adEl);
-}
-
-if (ExecutionEnvironment.canUseDOM) {
-  window.onload = initAd;
-}
-
-export default (function (context, options) {
-  return {
-    name: 'sidebar-ad',
-    onRouteUpdate() {
-      // Render only after the page renders.
-      setTimeout(() => {
-        initAd();
-      }, 0);
-    },
-  };
-})();
+});

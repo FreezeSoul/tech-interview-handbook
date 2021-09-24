@@ -1,9 +1,9 @@
 module.exports = {
   title: 'Tech Interview Handbook',
-  tagline:
-    'Carefully curated content to help you ace your next technical interview',
+  tagline: 'Curated interview preparation materials for busy engineers',
   url: 'https://techinterviewhandbook.org',
   baseUrl: '/',
+  trailingSlash: true,
   favicon: 'img/favicon.png',
   organizationName: 'yangshun',
   projectName: 'tech-interview-handbook',
@@ -19,7 +19,7 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
-        {to: 'introduction', label: 'Getting Started', position: 'right'},
+        {href: '/introduction', label: 'Getting Started', position: 'right'},
         {to: 'blog', label: 'Blog', position: 'right'},
         {
           href: 'https://github.com/yangshun/tech-interview-handbook',
@@ -29,6 +29,11 @@ module.exports = {
         {
           href: 'https://www.facebook.com/techinterviewhandbook',
           label: 'Facebook',
+          position: 'right',
+        },
+        {
+          href: 'https://twitter.com/yangshunz',
+          label: 'Twitter',
           position: 'right',
         },
       ],
@@ -41,8 +46,8 @@ module.exports = {
       trackingID: 'UA-44622716-2',
     },
     algolia: {
-      apiKey: 'bd359779d1c4c71ade6062e8f13f5a83',
-      indexName: 'yangshun-tech-interview',
+      apiKey: '4dabb055be464346fcb6877f086f08e8',
+      indexName: 'techinterviewhandbook',
     },
   },
   presets: [
@@ -64,10 +69,9 @@ module.exports = {
       },
     ],
   ],
-  clientModules: [require.resolve('./src/components/SidebarAd')],
   scripts: [
     {
-      src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4984084888641317",
+      src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4984084888641317',
       crossorigin: 'anonymous',
       async: true,
     },
